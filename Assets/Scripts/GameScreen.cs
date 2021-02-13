@@ -36,7 +36,9 @@ public class GameScreen : MonoBehaviour
         sceneLoaded += OnSceneLoaded;
         LoadScreenDirectory();
     }
-
+    
+    #region Menu&Flow
+    
     public void ShowTransition()
     {
         screenAnimator.SetTrigger(TransitionIn);
@@ -80,4 +82,23 @@ public class GameScreen : MonoBehaviour
         _screenDirectory[(int) SceneId.Menu] = ShowMenuScreen;
         _screenDirectory[(int) SceneId.Gameplay] = ShowGameplayScreen;
     }
+    
+    #endregion
+
+    #region Gameplay
+    public void ShowDamageFeedback(int playerHp)
+    {
+        
+    }
+    
+    public void ShowHealingFeedback(int playerHp)
+    {
+        
+    }
+
+    public void ShowGameOverPopup(int finalScore)
+    {
+        
+    }
+    #endregion
 }
