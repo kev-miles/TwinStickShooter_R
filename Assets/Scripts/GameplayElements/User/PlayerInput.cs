@@ -24,9 +24,7 @@ namespace GameplayElements.User
         private void Shoot()
         {
             if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
-            {
                 _presenter.Shoot();
-            }
         }
 
         private void Movement()

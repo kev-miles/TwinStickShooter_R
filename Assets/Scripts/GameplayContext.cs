@@ -1,13 +1,10 @@
 ﻿using GameEvents;
 using GameplayElements.User;
-using Infrastructure;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameplayContext : MonoBehaviour
 {
-    [Header("Player")]
     [SerializeField] private PlayerElements _playerElements = default;
 
     private Player _player;

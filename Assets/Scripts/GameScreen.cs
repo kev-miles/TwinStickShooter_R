@@ -4,6 +4,7 @@ using GameEvents;
 using GameplayElements.User;
 using Infrastructure;
 using JetBrains.Annotations;
+using Popups;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,9 +13,11 @@ using static UnityEngine.SceneManagement.SceneManager;
 
 public class GameScreen : MonoBehaviour
 {
+    [Header("Popups")] [SerializeField] private HowToPlayView howToPlayView = default;
+    
     [Header("Buttons")]
     [SerializeField] private Button startGameButton = default;
-    [SerializeField] private Button toggleAudioButton = default;
+    [SerializeField] private Button howToPlayButton = default;
     [SerializeField] private Button exitGameButton = default;
 
     [Header("Animations")]
@@ -33,15 +36,14 @@ public class GameScreen : MonoBehaviour
     {
         _screenObservable = screenObservable;
         startGameButton.OnClickAsObservable().Subscribe(_ => { ShowTransition(); _sceneToLoad = (int)SceneId.Gameplay; });
-        toggleAudioButton.OnClickAsObservable().Subscribe(_ => { });
+        howToPlayButton.OnClickAsObservable().Subscribe(_ => { ShowHowToPlay();});
         exitGameButton.OnClickAsObservable().Subscribe(_ => UnityEngine.Application.Quit());
         sceneLoaded += OnSceneLoaded;
         LoadScreenDirectory();
         SetupGameplayEventMap();
     }
-    
+
     #region Menu&Flow
-    
     public void ShowTransition()
     {
         ResetTriggers();
@@ -54,6 +56,11 @@ public class GameScreen : MonoBehaviour
         screenAnimator.SetTrigger(TransitionOut);
     }
 
+    private void ShowHowToPlay()
+    {
+        howToPlayView.Show();
+    }
+    
     [UsedImplicitly] //From Animator
     private void ShowScreenContent()
     {
