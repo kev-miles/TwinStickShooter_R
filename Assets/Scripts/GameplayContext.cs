@@ -14,7 +14,6 @@ public class GameplayContext : MonoBehaviour
     public void Initialize(GameScreen gameScreen)
     {
         _screen = gameScreen;
-        _screen.HideTransition();
         _gameplayObservable = new Subject<GameEvent>();
         SubscribeToEvents();
         SetupPlayer();

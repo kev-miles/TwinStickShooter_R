@@ -44,16 +44,17 @@ public class GameScreen : MonoBehaviour
     }
 
     #region Menu&Flow
-    public void ShowTransition()
-    {
-        ResetTriggers();
-        screenAnimator.SetTrigger(TransitionIn);
-    }
 
-    public void HideTransition()
+    private void HideTransition()
     {
         ResetTriggers();
         screenAnimator.SetTrigger(TransitionOut);
+    }
+    
+    private void ShowTransition()
+    {
+        ResetTriggers();
+        screenAnimator.SetTrigger(TransitionIn);
     }
 
     private void ShowHowToPlay()
