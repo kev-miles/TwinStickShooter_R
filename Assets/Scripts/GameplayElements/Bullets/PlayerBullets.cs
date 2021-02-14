@@ -1,6 +1,4 @@
-﻿using User;
-
-namespace GameplayElements.Bullets
+﻿namespace GameplayElements.Bullets
 {
     public class PlayerBullets : BulletPool
     {

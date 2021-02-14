@@ -1,30 +1,32 @@
-﻿using GameplayElements.Bullets;
-using Infrastructure;
+﻿using GameplayElements.Enemies;
+using GameplayElements.User;
+using Infrastructure.Interfaces;
 using UnityEngine;
-using User;
 
-namespace GameplayElements
+namespace GameplayElements.Bullets
 {
     public class Bullet : MonoBehaviour, Poolable
     {
-        [HideInInspector] public SpriteRenderer spriteR;
+        [HideInInspector] public BulletPool origin;
         [HideInInspector] public BulletType bulletType;
-        [HideInInspector] public BulletPool _origin;
-        [HideInInspector] public Color tint;
+        [HideInInspector] public Transform shooter;
 
-        public Sprite[] _allsprites;
+        [SerializeField] private Rigidbody2D rigidbody = default;
+        [SerializeField] private SpriteRenderer spriteR;
+        [SerializeField] private Color tint;
+        [SerializeField] private  Sprite[] allSprites = default;
 
         public void OnAcquire()
         {
             spriteR = this.gameObject.GetComponent<SpriteRenderer>();
-            ImplementSprite();
+            InitialSetup();
         }
 
         public void OnRelease()
         {
             spriteR.sprite = default(Sprite);
             bulletType = BulletType.None;
-            _origin.Release(this);
+            origin.Release(this);
         }
 
         void Update ()
@@ -35,28 +37,54 @@ namespace GameplayElements
         void ImplementBehaviour()
         {
             //TODO: Add Stategy for enemies and player
-            /*switch (bulletType)
+            switch (bulletType)
             {
-                case 0:
-                    this.transform.Translate(Vector3.up * 15f * Time.deltaTime);
+                case BulletType.Player:
+                    rigidbody.velocity = transform.right * 15f;
                     break;
-                case 1:
-                    this.transform.Translate(Vector3.down * 15f * Time.deltaTime);
+                case BulletType.Enemy:
+                    rigidbody.velocity = transform.right * 15f;
                     break;
-            }*/
+            }
         }
 
-        void ImplementSprite()
+        void InitialSetup()
         {
             switch (bulletType)
             {
                 case BulletType.Player:
-                    spriteR.sprite = _allsprites[(int)bulletType];
+                    gameObject.layer = LayerMask.NameToLayer("PlayerBullets");
+                    spriteR.sprite = allSprites[(int)bulletType];
+                    spriteR.color = Color.blue;
                     break;
                 case BulletType.Enemy:
-                    spriteR.sprite = _allsprites[(int)bulletType];
+                    gameObject.layer = LayerMask.NameToLayer("EnemyBullets");
+                    spriteR.sprite = allSprites[(int)bulletType];
+                    spriteR.color = Color.red;
                     break;
             }
-        } 
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (bulletType == BulletType.Player)
+            {
+                var enemy = collision.gameObject.GetComponent<EnemyView>();
+                if(enemy != null)
+                {
+                    //TODO: Do Something   
+                }
+            }
+            else if(bulletType == BulletType.Enemy)
+            {
+                var player = collision.gameObject.GetComponent<PlayerView>();
+                if(player != null)
+                {
+                    //TODO: Do Something   
+                }
+            }
+
+            OnRelease();
+        }
     }
 }

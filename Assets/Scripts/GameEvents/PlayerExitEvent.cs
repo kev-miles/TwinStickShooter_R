@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using User;
+﻿using GameplayElements.User;
+using Infrastructure;
 
 namespace GameEvents
 {

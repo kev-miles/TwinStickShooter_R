@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameEvents;
+using GameplayElements.User;
 using Infrastructure;
 using JetBrains.Annotations;
 using UniRx;
@@ -24,6 +25,7 @@ public class GameScreen : MonoBehaviour
     private static readonly int ShowGameplay = Animator.StringToHash("ShowGameplay");
 
     private readonly Dictionary<int, Action> _screenDirectory = new Dictionary<int, Action>();
+    private Dictionary<string, Action<GameEvent>> _eventMap = new Dictionary<string, Action<GameEvent>>();
     private int _sceneToLoad;
     private IObserver<GameEvent> _screenObservable;
 
@@ -35,17 +37,20 @@ public class GameScreen : MonoBehaviour
         exitGameButton.OnClickAsObservable().Subscribe(_ => UnityEngine.Application.Quit());
         sceneLoaded += OnSceneLoaded;
         LoadScreenDirectory();
+        SetupGameplayEventMap();
     }
     
     #region Menu&Flow
     
     public void ShowTransition()
     {
+        ResetTriggers();
         screenAnimator.SetTrigger(TransitionIn);
     }
 
     public void HideTransition()
     {
+        ResetTriggers();
         screenAnimator.SetTrigger(TransitionOut);
     }
 
@@ -75,6 +80,7 @@ public class GameScreen : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _screenObservable.OnNext(ScreenEvent.TransitionIn(scene.buildIndex));
+        HideTransition();
     }
 
     private void LoadScreenDirectory()
@@ -83,27 +89,51 @@ public class GameScreen : MonoBehaviour
         _screenDirectory[(int) SceneId.Gameplay] = ShowGameplayScreen;
     }
     
+    private void ResetTriggers()
+    {
+        screenAnimator.ResetTrigger(TransitionIn);
+        screenAnimator.ResetTrigger(TransitionOut);
+        screenAnimator.ResetTrigger(ShowMenu);
+        screenAnimator.ResetTrigger(ShowGameplay);
+    }
+    
     #endregion
 
     #region Gameplay
-    public void ShowExitPopup(GameEvent exitEvent)
+
+    public void ReceiveGameplayEvent(GameEvent e)
+    {
+        if(_eventMap.ContainsKey(e.name))
+            _eventMap[e.name](e);
+    }
+
+    private void ShowExitPopup(GameEvent exitEvent)
     {
         ShowTransition();
         _sceneToLoad = (int)SceneId.Menu;
     }
-    public void ShowDamageFeedback(GameEvent damageEvent)
-    {
-        
-    }
-    
-    public void ShowHealingFeedback(GameEvent healingEvent)
+
+    private void ShowDamageFeedback(GameEvent damageEvent)
     {
         
     }
 
-    public void ShowGameOverPopup(GameEvent deathEvent)
+    private void ShowHealingFeedback(GameEvent healingEvent)
+    {
+        
+    }
+
+    private void ShowGameOverPopup(GameEvent deathEvent)
     {
         var score = int.Parse(deathEvent.parameters["FinalScore"]);
+    }
+    
+    private void SetupGameplayEventMap()
+    {
+        _eventMap[PlayerEventNames.PlayerDeath] = ShowGameOverPopup;
+        _eventMap[PlayerEventNames.PlayerDamaged] = ShowDamageFeedback;
+        _eventMap[PlayerEventNames.PlayerHealed] = ShowHealingFeedback;
+        _eventMap[PlayerEventNames.PlayerExit] = ShowExitPopup;
     }
     #endregion
 }

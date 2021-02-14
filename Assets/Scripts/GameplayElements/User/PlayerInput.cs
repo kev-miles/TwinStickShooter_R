@@ -1,9 +1,7 @@
-﻿using System;
-using GameEvents;
-using Infrastructure;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UIElements;
 
-namespace User
+namespace GameplayElements.User
 {
     public class PlayerInput
     {
@@ -19,7 +17,16 @@ namespace User
         private void HandleInput()
         {
             Movement();
+            Shoot(); 
             ExitGameplay();
+        }
+
+        private void Shoot()
+        {
+            if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
+            {
+                _presenter.Shoot();
+            }
         }
 
         private void Movement()

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Infrastructure
+namespace GameEvents
 {
     public class GameEvent
     {

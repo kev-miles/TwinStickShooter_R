@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using GameplayElements;
-using GameplayElements.Bullets;
 using UnityEngine;
 
-namespace User
+namespace GameplayElements.Bullets
 {
     public class BulletPool : MonoBehaviour
     {
@@ -40,7 +38,8 @@ namespace User
             var obj = usable.Pop();
             obj.gameObject.SetActive(true);
             obj.transform.position = shooter.position;
-            obj._origin = this;
+            obj.transform.rotation = shooter.rotation;
+            obj.origin = this;
             obj.bulletType = type;
             obj.OnAcquire();
             return obj;

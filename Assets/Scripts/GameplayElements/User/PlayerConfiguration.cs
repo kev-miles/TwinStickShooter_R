@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace User
+namespace GameplayElements.User
 {
     [CreateAssetMenu]
     public class PlayerConfiguration : ScriptableObject

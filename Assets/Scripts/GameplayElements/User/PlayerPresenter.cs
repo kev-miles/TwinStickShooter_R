@@ -1,9 +1,8 @@
 ﻿using System;
 using GameEvents;
-using Infrastructure;
 using UnityEngine;
 
-namespace User
+namespace GameplayElements.User
 {
     public class PlayerPresenter
     {
@@ -23,12 +22,18 @@ namespace User
 
         public void Move(Vector2 to)
         {
-            _view.MoveTo(to);
+            _view.MoveTo(to, _config.Speed);
         }
 
         public void ExitGameplay()
         {
             _observer.OnNext(PlayerEvent.Exit());
+        }
+
+        public void Shoot()
+        {
+            _observer.OnNext(PlayerEvent.Shoot());
+            _view.Shoot();
         }
     }
 }

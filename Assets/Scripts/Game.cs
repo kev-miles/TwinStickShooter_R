@@ -19,7 +19,6 @@ public class Game : MonoBehaviour
     private void InitialMenuLoad()
     {
         SceneManager.LoadScene((int) SceneId.Menu);
-        gameScreen.HideTransition();
     }
 
     private void SetupGameplayContext()

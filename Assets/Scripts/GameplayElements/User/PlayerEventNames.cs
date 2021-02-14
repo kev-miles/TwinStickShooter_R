@@ -1,4 +1,4 @@
-﻿namespace User
+﻿namespace GameplayElements.User
 {
     public class PlayerEventNames
     {
