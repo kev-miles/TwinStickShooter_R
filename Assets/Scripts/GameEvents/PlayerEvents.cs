@@ -1,9 +1,7 @@
-﻿using Infrastructure;
-
-namespace GameEvents
+﻿namespace GameEvents
 {
-    public class PlayerEvent : GameEvent
+    public static class PlayerEvent
     {
-        
+        public static PlayerExitEvent Exit() => new PlayerExitEvent();
     }
 }

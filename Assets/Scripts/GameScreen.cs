@@ -86,19 +86,24 @@ public class GameScreen : MonoBehaviour
     #endregion
 
     #region Gameplay
-    public void ShowDamageFeedback(int playerHp)
+    public void ShowExitPopup(GameEvent exitEvent)
+    {
+        ShowTransition();
+        _sceneToLoad = (int)SceneId.Menu;
+    }
+    public void ShowDamageFeedback(GameEvent damageEvent)
     {
         
     }
     
-    public void ShowHealingFeedback(int playerHp)
+    public void ShowHealingFeedback(GameEvent healingEvent)
     {
         
     }
 
-    public void ShowGameOverPopup(int finalScore)
+    public void ShowGameOverPopup(GameEvent deathEvent)
     {
-        
+        var score = int.Parse(deathEvent.parameters["FinalScore"]);
     }
     #endregion
 }

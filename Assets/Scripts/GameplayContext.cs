@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructure;
 using UnityEngine;
 using User;
 
@@ -24,11 +25,12 @@ public class GameplayContext : MonoBehaviour
         _player.OnPlayerDeath += EndGameOnPlayerDeath;
         _player.OnPlayerDamaged += _screen.ShowDamageFeedback;
         _player.OnPlayerHeal += _screen.ShowHealingFeedback;
+        _player.OnPlayerExit += _screen.ShowExitPopup;
     }
 
-    private void EndGameOnPlayerDeath(int finalScore)
+    private void EndGameOnPlayerDeath(GameEvent deathEvent)
     {
         //TODO:stop gameplay
-        _screen.ShowGameOverPopup(finalScore);
+        _screen.ShowGameOverPopup(deathEvent);
     }
 }

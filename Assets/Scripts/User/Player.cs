@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using GameEvents;
+using Infrastructure;
 using UniRx;
 
 namespace User
 {
     public class Player
     {
-        public Action<int> OnPlayerDeath = (int p) => {  };
-        public Action<int> OnPlayerDamaged = (int p) => {  };
-        public Action<int> OnPlayerHeal= (int p) => {  };
-        public Action<int> OnPlayerShoot = (int p) => {  };
+        public Action<GameEvent> OnPlayerDeath = (GameEvent p) => {  };
+        public Action<GameEvent> OnPlayerDamaged = (GameEvent p) => {  };
+        public Action<GameEvent> OnPlayerHeal= (GameEvent p) => {  };
+        public Action<GameEvent> OnPlayerShoot = (GameEvent p) => {  };
+        public Action<GameEvent> OnPlayerExit = (GameEvent p) => {  };
         
         private PlayerView _view;
         private PlayerPresenter _presenter;
         private PlayerInput _input;
-        private IObservable<PlayerEvent> _observable;
+        private IObservable<GameEvent> _observable;
 
-        private Dictionary<string, Action<int>> _eventMap = new Dictionary<string, Action<int>>();
+        private Dictionary<string, Action<GameEvent>> _eventMap = new Dictionary<string, Action<GameEvent>>();
 
-        public Player(PlayerView view, PlayerPresenter presenter, PlayerInput input, IObservable<PlayerEvent> playerObservable)
+        public Player(PlayerView view, PlayerPresenter presenter, PlayerInput input, IObservable<GameEvent> playerObservable)
         {
             _view = view;
             _presenter = presenter;
@@ -33,16 +33,17 @@ namespace User
         private void SubscribeToEvents()
         {
             _observable
-                .Do(onNext: e => _eventMap[e.name](int.Parse(e.parameters.FirstOrDefault().ToString())))
+                .Do(onNext: e => _eventMap[e.name](e))
                 .Subscribe();
         }
 
         private void SetupMap()
         {
-            _eventMap["PlayerDeath"] = OnPlayerDeath;
-            _eventMap["PlayerDamaged"] = OnPlayerDamaged;
-            _eventMap["PlayerHealed"] = OnPlayerHeal;
-            _eventMap["PlayerShoot"] = OnPlayerShoot;
+            _eventMap[PlayerEventNames.PlayerDeath] = OnPlayerDeath;
+            _eventMap[PlayerEventNames.PlayerDamaged] = OnPlayerDamaged;
+            _eventMap[PlayerEventNames.PlayerHealed] = OnPlayerHeal;
+            _eventMap[PlayerEventNames.PlayerShoot] = OnPlayerShoot;
+            _eventMap[PlayerEventNames.PlayerExit] = OnPlayerExit;
         }
     }
 }
