@@ -15,7 +15,9 @@ using static UnityEngine.SceneManagement.SceneManager;
 
 public class GameScreen : MonoBehaviour
 {
-    [Header("Popups")] [SerializeField] private HowToPlayView howToPlayView = default;
+    [Header("Popups")] 
+    [SerializeField] private HowToPlayView howToPlayView = default;
+    [SerializeField] private GameOverView gameOverView = default;
     
     [Header("Buttons")]
     [SerializeField] private Button startGameButton = default;
@@ -129,10 +131,9 @@ public class GameScreen : MonoBehaviour
             _eventMap[e.name](e);
     }
 
-    private void ShowExitPopup(GameEvent exitEvent)
+    private void ShowExitTransition(GameEvent exitEvent)
     {
-        ShowTransition();
-        _sceneToLoad = (int)SceneId.Menu;
+        ExitTransition();
     }
 
     private void ShowDamageFeedback(GameEvent damageEvent)
@@ -157,7 +158,14 @@ public class GameScreen : MonoBehaviour
 
     private void ShowGameOverPopup(GameEvent deathEvent)
     {
-        var score = int.Parse(deathEvent.parameters["FinalScore"]);
+        var score = deathEvent.parameters["FinalScore"];
+        gameOverView.Show(score, false, ExitTransition);
+    }
+
+    private void ExitTransition()
+    {
+        ShowTransition();
+        _sceneToLoad = (int)SceneId.Menu;
     }
 
     private void SetupGameplayEventMap()
@@ -165,7 +173,7 @@ public class GameScreen : MonoBehaviour
         _eventMap[PlayerEventNames.PlayerDeath] = ShowGameOverPopup;
         _eventMap[PlayerEventNames.PlayerDamaged] = ShowDamageFeedback;
         _eventMap[PlayerEventNames.PlayerHealed] = ShowHealingFeedback;
-        _eventMap[PlayerEventNames.PlayerExit] = ShowExitPopup;
+        _eventMap[PlayerEventNames.PlayerExit] = ShowExitTransition;
         _eventMap[PlayerEventNames.UpdateScore] = ShowScore;
         _eventMap[PlayerEventNames.GotPowerUp] = ShowPowerUpFeedback;
     }

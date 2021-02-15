@@ -34,14 +34,20 @@ namespace GameplayElements.User
         {
             _hp--;
             _observer.OnNext(PlayerEvent.Damage(_hp));
-            
-            if(_hp == 0)
+
+            if (_hp == 0)
                 _observer.OnNext(PlayerEvent.Death(_score));
         }
 
         public void Move(Vector2 to)
         {
             _view.MoveTo(to, _config.Speed);
+        }
+        
+        public void Shoot()
+        {
+            _observer.OnNext(PlayerEvent.Shoot());
+            _view.Shoot(_shootingStrategy);
         }
 
         public void ExitGameplay()
@@ -55,10 +61,9 @@ namespace GameplayElements.User
             _observer.OnNext(PlayerEvent.PowerUp(strategy.Name));
         }
 
-        public void Shoot()
+        public bool IsAlive()
         {
-            _observer.OnNext(PlayerEvent.Shoot());
-            _view.Shoot(_shootingStrategy);
+            return _hp > 0;
         }
     }
 }

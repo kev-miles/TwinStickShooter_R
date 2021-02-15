@@ -12,7 +12,15 @@ namespace GameplayElements.User
         {
             _presenter = presenter;
             _config = playerConfiguration;
-            view.OnUpdate += HandleInput;
+            view.OnUpdate += Update;
+        }
+
+        private void Update()
+        {
+            if (_presenter.IsAlive())
+                HandleInput();
+            else
+                StopMovement();
         }
         private void HandleInput()
         {
@@ -33,6 +41,11 @@ namespace GameplayElements.User
             var y = Input.GetAxisRaw("Vertical");
             var dir = new Vector2(x, y).normalized;
             _presenter.Move(dir);
+        }
+
+        private void StopMovement()
+        {
+            _presenter.Move(Vector2.zero);
         }
 
         private void ExitGameplay()

@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using JetBrains.Annotations;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,12 @@ namespace Popups
         private void Hide()
         {
             _animator.Play("HowToOutro");
+        }
+        
+        [UsedImplicitly] //From Animator
+        private void PopupHidden()
+        {
+            
         }
     }
 }

@@ -30,16 +30,25 @@ namespace GameplayElements.User
         public void Shoot(ShootingStrategy strategy)
         {
             strategy.Shoot(transform);
+            _presenter.Damage();
         }
+
+        public void Damage()
+        {
+            _presenter.Damage();
+        }
+        
         private void Update()
         {
             OnUpdate();
         }
+        
         private void FixedUpdate()
         {
             Rotate();
             Move();
         }
+        
         private void Move()
         {
             _rigidbody.velocity = new Vector2(_nextPosition.x * _movementSpeed, _nextPosition.y * _movementSpeed);
@@ -50,13 +59,6 @@ namespace GameplayElements.User
             var direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            var entity = collision.gameObject.GetComponent<Bullet>();
-            if(entity != null)
-                _presenter.Damage();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace GameplayElements.Bullets
         [HideInInspector] public BulletPool origin;
         [HideInInspector] public BulletType bulletType;
         [HideInInspector] public Transform shooter;
+        [HideInInspector] public BulletStrategy strategy;
 
         [SerializeField] private Rigidbody2D rigidbody = default;
         [SerializeField] private SpriteRenderer spriteR;
@@ -36,16 +37,7 @@ namespace GameplayElements.Bullets
 
         void ImplementBehaviour()
         {
-            //TODO: Add Stategy for enemies and player
-            switch (bulletType)
-            {
-                case BulletType.Player:
-                    rigidbody.velocity = transform.right * 15f;
-                    break;
-                case BulletType.Enemy:
-                    rigidbody.velocity = transform.right * 15f;
-                    break;
-            }
+            strategy.Execute(rigidbody,transform);
         }
 
         void InitialSetup()
@@ -55,7 +47,7 @@ namespace GameplayElements.Bullets
                 case BulletType.Player:
                     gameObject.layer = LayerMask.NameToLayer("PlayerBullets");
                     spriteR.sprite = allSprites[(int)bulletType];
-                    spriteR.color = Color.blue;
+                    spriteR.color = Color.green;
                     break;
                 case BulletType.Enemy:
                     gameObject.layer = LayerMask.NameToLayer("EnemyBullets");
@@ -67,21 +59,16 @@ namespace GameplayElements.Bullets
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (bulletType == BulletType.Player)
+            var enemy = collision.gameObject.GetComponent<EnemyView>();
+            var player = collision.gameObject.GetComponent<PlayerView>();
+
+            if(enemy != null)
             {
-                var enemy = collision.gameObject.GetComponent<EnemyView>();
-                if(enemy != null)
-                {
-                    //TODO: Do Something   
-                }
+                enemy.Damage();
             }
-            else if(bulletType == BulletType.Enemy)
+            if(player != null)
             {
-                var player = collision.gameObject.GetComponent<PlayerView>();
-                if(player != null)
-                {
-                    //TODO: Do Something   
-                }
+                player.Damage();
             }
 
             OnRelease();

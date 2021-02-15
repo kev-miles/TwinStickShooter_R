@@ -37,6 +37,6 @@ public class GameplayContext : MonoBehaviour
 
     private void EndGameOnPlayerDeath(GameEvent deathEvent)
     {
-        //TODO:stop gameplay;
+        //Time.timeScale = 0;
     }
 }

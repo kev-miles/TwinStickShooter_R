@@ -39,6 +39,7 @@ namespace GameplayElements.Bullets
             obj.gameObject.SetActive(true);
             obj.transform.position = origin;
             obj.transform.rotation = rotation;
+            obj.strategy = new RegularBullet();
             obj.origin = this;
             obj.bulletType = type;
             obj.OnAcquire();
