@@ -1,7 +1,6 @@
 ﻿using GameplayElements.User;
-using Infrastructure;
 
-namespace GameEvents
+namespace GameEvents.Player
 {
     public class PlayerExitEvent : GameEvent
     {

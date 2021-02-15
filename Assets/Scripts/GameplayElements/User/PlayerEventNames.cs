@@ -8,5 +8,6 @@
         public const string PlayerShoot = "PlayerShoot";
         public const string PlayerExit = "PlayerExit";
         public static string GotPowerUp = "GotPowerUp";
+        public static string UpdateScore = "UpdateScore";
     }
 }

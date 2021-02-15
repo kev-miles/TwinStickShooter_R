@@ -828,7 +828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletprefab: {fileID: 6148540172660684242, guid: 3b46ec4fbf46eef40a6f9e58d16428ab,
     type: 3}
-  amount: 100
+  amount: 200
 --- !u!4 &1942714785
 Transform:
   m_ObjectHideFlags: 0
@@ -894,7 +894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletprefab: {fileID: 6148540172660684242, guid: 3b46ec4fbf46eef40a6f9e58d16428ab,
     type: 3}
-  amount: 100
+  amount: 200
 --- !u!1001 &2385643296299436493
 PrefabInstance:
   m_ObjectHideFlags: 0

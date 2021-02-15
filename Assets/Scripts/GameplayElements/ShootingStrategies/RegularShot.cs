@@ -1,7 +1,7 @@
 ﻿using GameplayElements.Bullets;
 using UnityEngine;
 
-namespace GameplayElements.Strategies
+namespace GameplayElements.ShootingStrategies
 {
     public class RegularShot : ShootingStrategy
     {

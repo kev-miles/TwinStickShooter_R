@@ -1,6 +1,6 @@
 ﻿using GameplayElements.User;
 
-namespace GameEvents
+namespace GameEvents.Player
 {
     public class PowerUpEvent : GameEvent
     {

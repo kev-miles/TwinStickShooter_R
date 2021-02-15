@@ -24,7 +24,7 @@ public class Game : MonoBehaviour
     private void SetupGameplayContext()
     {
         _screenObservable
-            .Where(e => e.parameters.ContainsKey("NewScene") && int.Parse(e.parameters["NewScene"]) == (int)SceneId.Gameplay)
+            .Where(e => e.parameters.ContainsKey("Scene") && int.Parse(e.parameters["Scene"]) == (int)SceneId.Gameplay)
             .Do(onNext: _ => FindObjectOfType<GameplayContext>().Initialize(gameScreen))
             .Subscribe();
     }

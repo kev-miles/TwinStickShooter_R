@@ -1,6 +1,4 @@
-﻿using Infrastructure;
-
-namespace GameEvents
+﻿namespace GameEvents.Screen
 {
     public class TransitionOutEvent : GameEvent
     {

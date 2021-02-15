@@ -3,7 +3,7 @@ using GameplayElements.Bullets;
 using UniRx;
 using UnityEngine;
 
-namespace GameplayElements.Strategies
+namespace GameplayElements.ShootingStrategies
 {
     public class BurstShot : ShootingStrategy
     {

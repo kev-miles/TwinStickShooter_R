@@ -1,6 +1,6 @@
 ﻿using System;
 using GameplayElements.Bullets;
-using GameplayElements.Strategies;
+using GameplayElements.ShootingStrategies;
 using UnityEngine;
 
 namespace GameplayElements.User

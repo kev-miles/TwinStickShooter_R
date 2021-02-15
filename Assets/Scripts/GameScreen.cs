@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameEvents;
+using GameEvents.Screen;
 using GameplayElements.User;
 using Infrastructure;
 using JetBrains.Annotations;
 using Popups;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +21,11 @@ public class GameScreen : MonoBehaviour
     [SerializeField] private Button startGameButton = default;
     [SerializeField] private Button howToPlayButton = default;
     [SerializeField] private Button exitGameButton = default;
+    
+    [Header("Gameplay")]
+    [SerializeField] private TMP_Text hpLabel = default;
+    [SerializeField] private TMP_Text scoreLabel = default;
+    [SerializeField] private TMP_Text powerUpLabel = default;
 
     [Header("Animations")]
     [SerializeField] private Animator screenAnimator = default;
@@ -68,6 +75,13 @@ public class GameScreen : MonoBehaviour
         var currentScene = GetActiveScene().buildIndex;
         _screenObservable.OnNext(ScreenEvent.TransitionOut(currentScene));
         _screenDirectory[currentScene].Invoke();
+    }
+    
+    [UsedImplicitly] //From Animator
+    private void ScreenContentShown()
+    {
+        var currentScene = GetActiveScene().buildIndex;
+        _screenObservable.OnNext(ScreenEvent.ScreenShown(currentScene));
     }
     
     [UsedImplicitly] //From Animator
@@ -123,7 +137,7 @@ public class GameScreen : MonoBehaviour
 
     private void ShowDamageFeedback(GameEvent damageEvent)
     {
-        
+        hpLabel.text += damageEvent.parameters["HP"];
     }
     
     private void ShowPowerUpFeedback(GameEvent powerupEvent)
@@ -133,7 +147,12 @@ public class GameScreen : MonoBehaviour
 
     private void ShowHealingFeedback(GameEvent healingEvent)
     {
-        
+        hpLabel.text += healingEvent.parameters["HP"];
+    }
+
+    private void ShowScore(GameEvent scoreEvent)
+    {
+        scoreLabel.text += scoreEvent.parameters["Score"];
     }
 
     private void ShowGameOverPopup(GameEvent deathEvent)
@@ -147,6 +166,7 @@ public class GameScreen : MonoBehaviour
         _eventMap[PlayerEventNames.PlayerDamaged] = ShowDamageFeedback;
         _eventMap[PlayerEventNames.PlayerHealed] = ShowHealingFeedback;
         _eventMap[PlayerEventNames.PlayerExit] = ShowExitPopup;
+        _eventMap[PlayerEventNames.UpdateScore] = ShowScore;
         _eventMap[PlayerEventNames.GotPowerUp] = ShowPowerUpFeedback;
     }
 

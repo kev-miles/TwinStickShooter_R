@@ -1,7 +1,8 @@
 ﻿using System;
 using GameEvents;
+using GameEvents.Player;
 using GameplayElements.Bullets;
-using GameplayElements.Strategies;
+using GameplayElements.ShootingStrategies;
 using UnityEngine;
 
 namespace GameplayElements.User
@@ -26,6 +27,8 @@ namespace GameplayElements.User
             _observer = playerObserver;
             _pool = pool;
             ApplyShootingStrategy(new RegularShot(_pool, BulletType.Player));
+            _observer.OnNext(PlayerEvent.UpdateScore(_score));
+            _observer.OnNext(PlayerEvent.Damage(_hp));
         }
 
         public void Move(Vector2 to)
