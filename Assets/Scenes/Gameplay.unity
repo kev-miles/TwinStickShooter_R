@@ -656,6 +656,7 @@ MonoBehaviour:
   playerView: {fileID: 2385643296299436494}
   playerConfiguration: {fileID: 11400000, guid: 814329f5a98d0554d9c0de6103bfceef,
     type: 2}
+  playerBulletPool: {fileID: 1942714784}
 --- !u!1 &1512409453
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,21 +793,56 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2087546911}
+  - {fileID: 1942714785}
   m_Father: {fileID: 634031491}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1885622919 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1885622919, guid: 1d97383dc7721ec4a838bec8aad113a1,
-    type: 3}
-  m_PrefabInstance: {fileID: 2385643296299436493}
+--- !u!1 &1942714783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1942714785}
+  - component: {fileID: 1942714784}
+  m_Layer: 0
+  m_Name: PlayerBulletPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1942714784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942714783}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5b5b5685c194ac6ae2c84abaf808868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletprefab: {fileID: 6148540172660684242, guid: 3b46ec4fbf46eef40a6f9e58d16428ab,
+    type: 3}
+  amount: 100
+--- !u!4 &1942714785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942714783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1723771522}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2000875183 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2385643296555444066, guid: 1d97383dc7721ec4a838bec8aad113a1,
@@ -930,7 +966,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pool
       value: 
-      objectReference: {fileID: 1885622919}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d97383dc7721ec4a838bec8aad113a1, type: 3}
 --- !u!114 &2385643296299436494 stripped

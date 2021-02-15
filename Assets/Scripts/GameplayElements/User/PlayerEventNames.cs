@@ -7,5 +7,6 @@
         public const string PlayerHealed = "PlayerHealed";
         public const string PlayerShoot = "PlayerShoot";
         public const string PlayerExit = "PlayerExit";
+        public static string GotPowerUp = "GotPowerUp";
     }
 }

@@ -21,7 +21,8 @@ public class GameplayContext : MonoBehaviour
 
     private void SetupPlayer()
     {
-        _player = PlayerComposer.Compose(_playerElements.View, _gameplayObservable, _playerElements.Configuration);
+        _player = PlayerComposer.Compose(_playerElements.View, _gameplayObservable, 
+            _playerElements.Configuration, _playerElements.BulletPool);
     }
 
     private void SubscribeToEvents()

@@ -33,12 +33,12 @@ namespace GameplayElements.Bullets
             }
         }
 
-        public Bullet Acquire (Transform shooter, BulletType type)
+        public Bullet Acquire (Vector3 origin, Quaternion rotation , BulletType type)
         {
             var obj = usable.Pop();
             obj.gameObject.SetActive(true);
-            obj.transform.position = shooter.position;
-            obj.transform.rotation = shooter.rotation;
+            obj.transform.position = origin;
+            obj.transform.rotation = rotation;
             obj.origin = this;
             obj.bulletType = type;
             obj.OnAcquire();

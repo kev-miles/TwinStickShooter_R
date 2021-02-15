@@ -1,5 +1,6 @@
 ﻿using System;
 using GameplayElements.Bullets;
+using GameplayElements.Strategies;
 using UnityEngine;
 
 namespace GameplayElements.User
@@ -20,9 +21,9 @@ namespace GameplayElements.User
             _nextPosition = position;
         }
         
-        public void Shoot()
+        public void Shoot(ShootingStrategy strategy)
         {
-            pool.Acquire(transform, BulletType.Player);
+            strategy.Shoot(transform);
         }
         private void Update()
         {

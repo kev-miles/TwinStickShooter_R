@@ -125,6 +125,11 @@ public class GameScreen : MonoBehaviour
     {
         
     }
+    
+    private void ShowPowerUpFeedback(GameEvent powerupEvent)
+    {
+        var name = powerupEvent.parameters["Name"];
+    }
 
     private void ShowHealingFeedback(GameEvent healingEvent)
     {
@@ -135,13 +140,15 @@ public class GameScreen : MonoBehaviour
     {
         var score = int.Parse(deathEvent.parameters["FinalScore"]);
     }
-    
+
     private void SetupGameplayEventMap()
     {
         _eventMap[PlayerEventNames.PlayerDeath] = ShowGameOverPopup;
         _eventMap[PlayerEventNames.PlayerDamaged] = ShowDamageFeedback;
         _eventMap[PlayerEventNames.PlayerHealed] = ShowHealingFeedback;
         _eventMap[PlayerEventNames.PlayerExit] = ShowExitPopup;
+        _eventMap[PlayerEventNames.GotPowerUp] = ShowPowerUpFeedback;
     }
+
     #endregion
 }
