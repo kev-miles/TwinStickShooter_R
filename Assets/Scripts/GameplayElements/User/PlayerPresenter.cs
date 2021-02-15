@@ -23,12 +23,20 @@ namespace GameplayElements.User
             PlayerConfiguration playerConfiguration, BulletPool pool)
         {
             _view = view;
+            _view.SetPresenter(this);
             _config = playerConfiguration;
             _observer = playerObserver;
             _pool = pool;
             ApplyShootingStrategy(new RegularShot(_pool, BulletType.Player));
-            _observer.OnNext(PlayerEvent.UpdateScore(_score));
+        }
+
+        public void Damage()
+        {
+            _hp--;
             _observer.OnNext(PlayerEvent.Damage(_hp));
+            
+            if(_hp == 0)
+                _observer.OnNext(PlayerEvent.Death(_score));
         }
 
         public void Move(Vector2 to)

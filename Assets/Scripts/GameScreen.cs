@@ -137,7 +137,7 @@ public class GameScreen : MonoBehaviour
 
     private void ShowDamageFeedback(GameEvent damageEvent)
     {
-        hpLabel.text += damageEvent.parameters["HP"];
+        hpLabel.text = "HP: " + damageEvent.parameters["HP"];
     }
     
     private void ShowPowerUpFeedback(GameEvent powerupEvent)
@@ -147,12 +147,12 @@ public class GameScreen : MonoBehaviour
 
     private void ShowHealingFeedback(GameEvent healingEvent)
     {
-        hpLabel.text += healingEvent.parameters["HP"];
+        hpLabel.text = "HP: " + healingEvent.parameters["HP"];
     }
 
     private void ShowScore(GameEvent scoreEvent)
     {
-        scoreLabel.text += scoreEvent.parameters["Score"];
+        scoreLabel.text = "Score " + scoreEvent.parameters["Score"];
     }
 
     private void ShowGameOverPopup(GameEvent deathEvent)

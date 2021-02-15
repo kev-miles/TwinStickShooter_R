@@ -12,8 +12,14 @@ namespace GameplayElements.User
         [SerializeField] private BulletPool pool = default;
         [SerializeField] private Rigidbody2D _rigidbody = default;
 
+        private PlayerPresenter _presenter;
         private float _movementSpeed;
         private Vector2 _nextPosition;
+
+        public void SetPresenter(PlayerPresenter presenter)
+        {
+            _presenter = presenter;
+        }
         
         public void MoveTo(Vector2 position, float speed)
         {
@@ -44,6 +50,13 @@ namespace GameplayElements.User
             var direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            var entity = collision.gameObject.GetComponent<Bullet>();
+            if(entity != null)
+                _presenter.Damage();
         }
     }
 }
