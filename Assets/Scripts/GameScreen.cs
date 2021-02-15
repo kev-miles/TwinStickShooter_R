@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using GameEvents;
 using GameEvents.Screen;
+using GameEvents.Screen.Popups;
 using GameplayElements.User;
 using Infrastructure;
 using JetBrains.Annotations;
-using Popups;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -143,7 +143,7 @@ public class GameScreen : MonoBehaviour
     
     private void ShowPowerUpFeedback(GameEvent powerupEvent)
     {
-        var name = powerupEvent.parameters["Name"];
+        powerUpLabel.text = powerupEvent.parameters["Name"];
     }
 
     private void ShowHealingFeedback(GameEvent healingEvent)

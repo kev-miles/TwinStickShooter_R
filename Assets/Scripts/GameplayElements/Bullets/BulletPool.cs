@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameplayElements.Bullets.Strategies;
 using UnityEngine;
 
 namespace GameplayElements.Bullets
@@ -29,7 +30,6 @@ namespace GameplayElements.Bullets
                 prefab.transform.position = new Vector2(100, 100);
                 prefab.gameObject.SetActive(false);
                 Add(prefab);
-                usable.Push(prefab);
             }
         }
 

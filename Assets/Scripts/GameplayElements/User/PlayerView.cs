@@ -1,5 +1,4 @@
 ﻿using System;
-using GameplayElements.Bullets;
 using GameplayElements.ShootingStrategies;
 using UnityEngine;
 
@@ -9,8 +8,9 @@ namespace GameplayElements.User
     {
         public Action OnUpdate = () => {};
         
-        [SerializeField] private BulletPool pool = default;
-        [SerializeField] private Rigidbody2D _rigidbody = default;
+        [SerializeField] private Rigidbody2D rigidbody = default;
+        [SerializeField] private SpriteRenderer[] graphics = new SpriteRenderer[2];
+        [SerializeField] private GameObject explosionEffect = default;
 
         private PlayerPresenter _presenter;
         private float _movementSpeed;
@@ -19,6 +19,15 @@ namespace GameplayElements.User
         public void SetPresenter(PlayerPresenter presenter)
         {
             _presenter = presenter;
+        }
+
+        public void ShowDeath()
+        {
+            foreach (var renderer in graphics)
+            {
+                renderer.enabled = false;
+            }
+            explosionEffect.SetActive(true);
         }
         
         public void MoveTo(Vector2 position, float speed)
@@ -30,12 +39,16 @@ namespace GameplayElements.User
         public void Shoot(ShootingStrategy strategy)
         {
             strategy.Shoot(transform);
-            _presenter.Damage();
         }
 
         public void Damage()
         {
             _presenter.Damage();
+        }
+
+        public void ApplyShootingStrategy(ShootingStrategy strategy)
+        {
+            _presenter.ApplyShootingStrategy(strategy);
         }
         
         private void Update()
@@ -51,7 +64,7 @@ namespace GameplayElements.User
         
         private void Move()
         {
-            _rigidbody.velocity = new Vector2(_nextPosition.x * _movementSpeed, _nextPosition.y * _movementSpeed);
+            rigidbody.velocity = new Vector2(_nextPosition.x * _movementSpeed, _nextPosition.y * _movementSpeed);
         }
         
         private void Rotate()

@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Popups
+namespace GameEvents.Screen.Popups
 {
     public class HowToPlayView : MonoBehaviour
     {

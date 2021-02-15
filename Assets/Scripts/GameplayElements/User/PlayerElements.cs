@@ -6,11 +6,11 @@ namespace GameplayElements.User
     public class PlayerElements : MonoBehaviour
     {
         [SerializeField] private PlayerView playerView = default;
-        [SerializeField] private PlayerConfiguration playerConfiguration = default;
+        [SerializeField] private EntityConfiguration entityConfiguration = default;
         [SerializeField] private BulletPool playerBulletPool = default;
 
         public PlayerView View => playerView;
-        public PlayerConfiguration Configuration => playerConfiguration;
+        public EntityConfiguration Configuration => entityConfiguration;
         public BulletPool BulletPool => playerBulletPool;
     }
 }

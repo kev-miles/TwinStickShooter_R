@@ -6,12 +6,12 @@ namespace GameplayElements.User
     public class PlayerInput
     {
         private PlayerPresenter _presenter;
-        private PlayerConfiguration _config;
+        private EntityConfiguration _config;
         public PlayerInput(PlayerView view, PlayerPresenter presenter,
-            PlayerConfiguration playerConfiguration)
+            EntityConfiguration entityConfiguration)
         {
             _presenter = presenter;
-            _config = playerConfiguration;
+            _config = entityConfiguration;
             view.OnUpdate += Update;
         }
 

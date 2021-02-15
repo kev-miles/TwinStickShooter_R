@@ -8,14 +8,21 @@ namespace GameplayElements.ShootingStrategies
         public string Name => name;
         
         protected string name;
-        protected BulletPool bulletPool;
+        protected BulletPool pool;
         protected BulletType type;
 
-        public ShootingStrategy(BulletPool pool, BulletType type)
+        public virtual void Shoot(Transform shooter){}
+
+        public ShootingStrategy WithPool(BulletPool pool)
         {
-            bulletPool = pool;
+            this.pool = pool;
+            return this;
         }
 
-        public virtual void Shoot(Transform shooter){}
+        public ShootingStrategy WithType(BulletType type)
+        {
+            this.type = type;
+            return this;
+        }
     }
 }

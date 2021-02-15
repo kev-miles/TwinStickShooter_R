@@ -13,7 +13,7 @@ namespace GameplayElements.User
         private IObserver<GameEvent> _gameplayObserver;
         private IObservable<GameEvent> _playerObservable;
 
-        private Dictionary<string, Action<GameEvent>> _eventMap = new Dictionary<string, Action<GameEvent>>();
+        private Dictionary<string, Action> _eventMap = new Dictionary<string, Action>();
 
         public Player(PlayerView view, PlayerPresenter presenter, PlayerInput input, 
             IObserver<GameEvent> gameplayObserver, IObservable<GameEvent> playerObservable)
@@ -23,6 +23,7 @@ namespace GameplayElements.User
             _input = input;
             _gameplayObserver = gameplayObserver;
             _playerObservable = playerObservable;
+            SetupGameplayEventMap();
             SubscribeToEvents();
         }
 
@@ -31,6 +32,17 @@ namespace GameplayElements.User
             _playerObservable
                 .Do(onNext: e => _gameplayObserver.OnNext(e))
                 .Subscribe();
+        }
+
+        public void ReceiveEvents(GameEvent external)
+        {
+            if (_eventMap.ContainsKey(external.name))
+                _eventMap[external.name]();
+        }
+
+        private void SetupGameplayEventMap()
+        {
+            _eventMap[PlayerEventNames.EnemyKilled] = _presenter.EnemyKilled;
         }
     }
 }

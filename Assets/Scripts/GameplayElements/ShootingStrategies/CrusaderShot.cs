@@ -1,27 +1,24 @@
-﻿using GameplayElements.Bullets;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GameplayElements.ShootingStrategies
 {
     public class CrusaderShot : ShootingStrategy
     {
-        public CrusaderShot(BulletPool pool, BulletType type) : base(pool, type)
+        public CrusaderShot() : base()
         {
             base.name = "Crusader";
-            base.bulletPool = pool;
-            base.type = type;
         }
 
         public override void Shoot(Transform shooter)
         {
             var rotation = shooter.rotation;
             var position = shooter.position;
-            bulletPool.Acquire(position, rotation, type);
-            
             var euler = rotation.eulerAngles;
-            bulletPool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z+90), type);
-            bulletPool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+180) , type);
-            bulletPool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+270) , type);
+            
+            pool.Acquire(position, rotation, type);
+            pool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z+90), type);
+            pool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+180) , type);
+            pool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+270) , type);
         }
     }
 }

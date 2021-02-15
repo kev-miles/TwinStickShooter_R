@@ -9,5 +9,6 @@
         public const string PlayerExit = "PlayerExit";
         public static string GotPowerUp = "GotPowerUp";
         public static string UpdateScore = "UpdateScore";
+        public static string EnemyKilled = "EnemyKilled";
     }
 }

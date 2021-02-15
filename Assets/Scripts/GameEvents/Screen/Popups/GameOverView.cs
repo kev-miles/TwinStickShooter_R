@@ -5,36 +5,39 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverView : MonoBehaviour
+namespace GameEvents.Screen.Popups
 {
-    // Start is called before the first frame update
-    [SerializeField] private Button closeButton = default;
-    [SerializeField] private TMP_Text _feedbackLabel = default;
-    [SerializeField] private TMP_Text _scoreLabel = default;
-    [SerializeField] private Animator _animator = default;
-
-    private Action _callback;
-    private void Awake()
+    public class GameOverView : MonoBehaviour
     {
-        closeButton.OnClickAsObservable().Subscribe(_ => Hide());
-    }
+        // Start is called before the first frame update
+        [SerializeField] private Button closeButton = default;
+        [SerializeField] private TMP_Text _feedbackLabel = default;
+        [SerializeField] private TMP_Text _scoreLabel = default;
+        [SerializeField] private Animator _animator = default;
 
-    public void Show(string score, bool playerWon, Action callback)
-    {
-        _callback = callback;
-        _feedbackLabel.text = playerWon ? "Congratulations!" : "Game Over";
-        _scoreLabel.text = "Final score: " + score;
-        _animator.Play("GameOverIntro");
-    }
+        private Action _callback;
+        private void Awake()
+        {
+            closeButton.OnClickAsObservable().Subscribe(_ => Hide());
+        }
 
-    private void Hide()
-    {
-        _animator.Play("GameOverOutro");
-    }
+        public void Show(string score, bool playerWon, Action callback)
+        {
+            _callback = callback;
+            _feedbackLabel.text = playerWon ? "Congratulations!" : "Game Over";
+            _scoreLabel.text = "Final score: " + score;
+            _animator.Play("GameOverIntro");
+        }
+
+        private void Hide()
+        {
+            _animator.Play("GameOverOutro");
+        }
     
-    [UsedImplicitly] //From Animator
-    private void PopupHidden()
-    {
-        _callback();
+        [UsedImplicitly] //From Animator
+        private void PopupHidden()
+        {
+            _callback();
+        }
     }
 }

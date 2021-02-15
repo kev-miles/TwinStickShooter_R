@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GameplayElements.Bullets
+namespace GameplayElements.Bullets.Strategies
 {
     public class RegularBullet : BulletStrategy
     {
