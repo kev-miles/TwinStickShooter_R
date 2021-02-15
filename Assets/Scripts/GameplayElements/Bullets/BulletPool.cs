@@ -29,6 +29,7 @@ namespace GameplayElements.Bullets
                 var prefab = GameObject.Instantiate(_bulletprefab);
                 prefab.transform.position = new Vector2(100, 100);
                 prefab.gameObject.SetActive(false);
+                usable.Push(prefab);
                 Add(prefab);
             }
         }
@@ -50,7 +51,6 @@ namespace GameplayElements.Bullets
         {
             obj.transform.parent = bulletcontainer.transform;
             obj.gameObject.SetActive(false);
-            usable.Push(obj);
         }
 
         public void Release(Bullet obj)

@@ -22,8 +22,6 @@ namespace GameplayElements.ShootingStrategies
                 .Do(_ => pool.Acquire(position, rotation, type))
                 .Delay(TimeSpan.FromSeconds(shotDelay))
                 .Do(_ => pool.Acquire(position, rotation, type))
-                .Delay(TimeSpan.FromSeconds(shotDelay))
-                .Do(_ => pool.Acquire(position, rotation, type))
                 .Subscribe();
         }
     }
