@@ -20,4 +20,5 @@ MonoBehaviour:
   scoreDamage: -150
   scoreDeath: -350
   scoreEnemy: 25
+  enemiesPerWave: 050000000a0000000f000000
   powerUpSpawnChance: 0.9

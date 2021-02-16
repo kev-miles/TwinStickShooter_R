@@ -6,7 +6,7 @@ namespace GameEvents.Enemies
     {
         public EnemyDeathEvent()
         {
-            name = PlayerEventNames.EnemyKilled;
+            name = EventNames.EnemyKilled;
         }
     }
 }

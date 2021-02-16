@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameplayElements.ShootingStrategies;
+using GameplayElements.User;
 using UnityEngine;
 
 namespace GameplayElements.Enemies
@@ -29,14 +31,14 @@ namespace GameplayElements.Enemies
             }
         }
 
-        public EnemyView Acquire(Vector2 pos, ShootingStrategy strategy)
+        public EnemyView Acquire(Vector2 pos, Func<Vector3> playerPosition, ShootingStrategy strategy)
         {
             var obj = _usable.Pop();
             obj.gameObject.SetActive(true);
             obj.transform.position = pos;
+            obj.playerPosition = playerPosition;
             obj.origin = this;
             obj.strategy = strategy;
-            obj.OnAcquire();
             return obj;
         }
 

@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public PowerUpEvent(string powerupName)
         {
-            name = PlayerEventNames.GotPowerUp;
+            name = EventNames.GotPowerUp;
             parameters["Name"] = powerupName;
         }
     }

@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public UpdateScoreEvent(int newScore)
         {
-            name = PlayerEventNames.UpdateScore;
+            name = EventNames.UpdateScore;
             parameters["Score"] = newScore.ToString();
         }
     }

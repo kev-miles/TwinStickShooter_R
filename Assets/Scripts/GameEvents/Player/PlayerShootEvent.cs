@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public PlayerShootEvent()
         {
-            name = PlayerEventNames.PlayerShoot;
+            name = EventNames.PlayerShoot;
         }
     }
 }

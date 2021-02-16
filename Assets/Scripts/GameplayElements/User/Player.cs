@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameEvents;
 using UniRx;
+using UnityEngine;
 
 namespace GameplayElements.User
 {
@@ -26,6 +27,17 @@ namespace GameplayElements.User
             SetupGameplayEventMap();
             SubscribeToEvents();
         }
+        
+        public void ReceiveEvents(GameEvent external)
+        {
+            if (_eventMap.ContainsKey(external.name))
+                _eventMap[external.name]();
+        }
+        
+        public Vector3 GetPlayerPosition()
+        {
+            return _view.transform.position;
+        }
 
         private void SubscribeToEvents()
         {
@@ -34,15 +46,9 @@ namespace GameplayElements.User
                 .Subscribe();
         }
 
-        public void ReceiveEvents(GameEvent external)
-        {
-            if (_eventMap.ContainsKey(external.name))
-                _eventMap[external.name]();
-        }
-
         private void SetupGameplayEventMap()
         {
-            _eventMap[PlayerEventNames.EnemyKilled] = _presenter.EnemyKilled;
+            _eventMap[EventNames.EnemyKilled] = _presenter.EnemyKilled;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameplayElements.ShootingStrategies;
+﻿using System;
+using GameplayElements.ShootingStrategies;
 using Infrastructure.Interfaces;
 using UnityEngine;
 
@@ -16,7 +17,14 @@ namespace GameplayElements.Enemies
         private EnemyPresenter _presenter;
         private float _movementSpeed;
         private Vector2 _nextPosition;
+        public Func<Vector3> playerPosition;
 
+        public void SetPresenter(EnemyPresenter presenter)
+        {
+            _presenter = presenter;
+            OnAcquire();
+        }
+        
         public void OnAcquire()
         {
             _presenter.ApplyShootingStrategy(strategy);
@@ -30,11 +38,6 @@ namespace GameplayElements.Enemies
             }
             explosionEffect.SetActive(false);
             origin.Release(this);
-        }
-
-        public void SetPresenter(EnemyPresenter presenter)
-        {
-            _presenter = presenter;
         }
 
         public void ShowDeath()
@@ -76,9 +79,9 @@ namespace GameplayElements.Enemies
         
         private void Rotate()
         {
-            /*var direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+            var direction = (playerPosition.Invoke() - transform.position).normalized;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));*/
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         }
     }
 }

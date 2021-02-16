@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public PlayerExitEvent()
         {
-            name = PlayerEventNames.PlayerExit;
+            name = EventNames.PlayerExit;
         }
     }
 }

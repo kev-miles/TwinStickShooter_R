@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public PlayerDeathEvent(int score)
         {
-            name = PlayerEventNames.PlayerDeath;
+            name = EventNames.PlayerKilled;
             parameters["FinalScore"] = score.ToString();
         }
     }

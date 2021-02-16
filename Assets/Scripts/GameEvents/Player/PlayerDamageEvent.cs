@@ -6,7 +6,7 @@ namespace GameEvents.Player
     {
         public PlayerDamageEvent(int hp)
         {
-            name = PlayerEventNames.PlayerDamaged;
+            name = EventNames.PlayerDamaged;
             parameters["HP"] = hp.ToString();
         }
     }

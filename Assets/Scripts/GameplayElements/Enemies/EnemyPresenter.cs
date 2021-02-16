@@ -57,7 +57,7 @@ namespace GameplayElements.Enemies
 
         private void Death()
         {
-            _observer.OnNext(EnemyEvents.Death());
+            _observer.OnNext(EnemyEvent.Death());
             _view.ShowDeath();
         }
     }

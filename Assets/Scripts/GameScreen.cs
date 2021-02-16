@@ -170,12 +170,12 @@ public class GameScreen : MonoBehaviour
 
     private void SetupGameplayEventMap()
     {
-        _eventMap[PlayerEventNames.PlayerDeath] = ShowGameOverPopup;
-        _eventMap[PlayerEventNames.PlayerDamaged] = ShowDamageFeedback;
-        _eventMap[PlayerEventNames.PlayerHealed] = ShowHealingFeedback;
-        _eventMap[PlayerEventNames.PlayerExit] = ShowExitTransition;
-        _eventMap[PlayerEventNames.UpdateScore] = ShowScore;
-        _eventMap[PlayerEventNames.GotPowerUp] = ShowPowerUpFeedback;
+        _eventMap[EventNames.PlayerKilled] = ShowGameOverPopup;
+        _eventMap[EventNames.PlayerDamaged] = ShowDamageFeedback;
+        _eventMap[EventNames.PlayerHealed] = ShowHealingFeedback;
+        _eventMap[EventNames.PlayerExit] = ShowExitTransition;
+        _eventMap[EventNames.UpdateScore] = ShowScore;
+        _eventMap[EventNames.GotPowerUp] = ShowPowerUpFeedback;
     }
 
     #endregion
