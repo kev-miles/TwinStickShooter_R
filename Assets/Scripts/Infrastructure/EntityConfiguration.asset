@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   playerHp: 5
-  enemySpeed: 5
+  enemySpeed: 3
   enemyHp: 3
   scorePowerUp: 100
   scoreDamage: -150
   scoreDeath: -350
   scoreEnemy: 25
+  powerUpSpawnChance: 0.9

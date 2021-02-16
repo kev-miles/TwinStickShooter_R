@@ -13,6 +13,7 @@ namespace GameplayElements.User
         [SerializeField] private int scoreDamage = -150;
         [SerializeField] private int scoreDeath = -350;
         [SerializeField] private int scoreEnemy = 25;
+        [SerializeField] private float powerUpSpawnChance = 0.9f;
         
         public int PlayerHp => playerHp;
         public float PlayerSpeed => playerSpeed;
@@ -22,5 +23,6 @@ namespace GameplayElements.User
         public int ScoreEnemy => scoreEnemy;
         public int ScorePowerUp => scorePowerUp;
         public int ScoreDeath => scoreDeath;
+        public float PowerUpSpawnChance => powerUpSpawnChance;
     }
 }

@@ -24,7 +24,6 @@ namespace GameplayElements.Enemies
             EntityConfiguration entityConfiguration, BulletPool pool)
         {
             _view = view;
-            _view.SetPresenter(this);
             _config = entityConfiguration;
             _observer = enemyObserver;
             _pool = pool;

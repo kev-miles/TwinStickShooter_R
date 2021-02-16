@@ -9,10 +9,12 @@ namespace GameplayElements.Enemies
         [SerializeField] private BulletPool enemyBulletPool = default;
         [SerializeField] private Transform[] spawnPoints = default;
         [SerializeField] private PowerUp powerUp = default;
-        
+        [SerializeField] private EnemyEntityPool enemyEntityPool = default;
+
         public EnemyView EnemyView => enemyView;
         public BulletPool EnemyBulletPool => enemyBulletPool;
         public Transform[] SpawnPoints => spawnPoints;
         public PowerUp PowerUp => powerUp;
+        public EnemyEntityPool EnemyEntityPool => enemyEntityPool;
     }
 }

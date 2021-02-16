@@ -1,19 +1,36 @@
-﻿using System;
-using GameplayElements.ShootingStrategies;
-using GameplayElements.User;
+﻿using GameplayElements.ShootingStrategies;
+using Infrastructure.Interfaces;
 using UnityEngine;
 
 namespace GameplayElements.Enemies
 {
-    public class EnemyView : MonoBehaviour
+    public class EnemyView : MonoBehaviour, Poolable
     {
         [SerializeField] private Rigidbody2D rigidbody = default;
         [SerializeField] private SpriteRenderer[] graphics = new SpriteRenderer[2];
         [SerializeField] private GameObject explosionEffect = default;
 
+        public ShootingStrategy strategy;
+        public EnemyEntityPool origin;
+
         private EnemyPresenter _presenter;
         private float _movementSpeed;
         private Vector2 _nextPosition;
+
+        public void OnAcquire()
+        {
+            _presenter.ApplyShootingStrategy(strategy);
+        }
+
+        public void OnRelease()
+        {
+            foreach (var renderer in graphics)
+            {
+                renderer.enabled = true;
+            }
+            explosionEffect.SetActive(false);
+            origin.Release(this);
+        }
 
         public void SetPresenter(EnemyPresenter presenter)
         {
@@ -27,6 +44,7 @@ namespace GameplayElements.Enemies
                 renderer.enabled = false;
             }
             explosionEffect.SetActive(true);
+            OnRelease();
         }
         
         public void MoveTo(Vector2 position, float speed)
@@ -43,11 +61,6 @@ namespace GameplayElements.Enemies
         public void Damage()
         {
             _presenter.Damage();
-        }
-
-        public void ApplyShootingStrategy(ShootingStrategy strategy)
-        {
-            _presenter.ApplyShootingStrategy(strategy);
         }
 
         private void FixedUpdate()
