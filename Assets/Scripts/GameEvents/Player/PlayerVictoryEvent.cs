@@ -4,9 +4,10 @@ namespace GameEvents.Player
 {
     public class PlayerVictoryEvent : GameEvent
     {
-        public PlayerVictoryEvent()
+        public PlayerVictoryEvent(int score)
         {
             name = EventNames.PlayerVictory;
+            parameters["FinalScore"] = score.ToString();
         }
     }
 }

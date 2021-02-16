@@ -1105,6 +1105,14 @@ MonoBehaviour:
   - {fileID: 868724918}
   - {fileID: 218981381}
   - {fileID: 1739635329}
+  - {fileID: 1307756765}
+  - {fileID: 1243135617}
+  - {fileID: 658948216}
+  - {fileID: 538839729}
+  - {fileID: 1486807693}
+  - {fileID: 687821148}
+  - {fileID: 1856041603}
+  - {fileID: 1322328097}
   powerUp: {fileID: 165034594}
   enemyEntityPool: {fileID: 442380181}
 --- !u!1 &1243135616
@@ -1177,7 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1322328097}
   m_Layer: 0
-  m_Name: SpawnPoint_15
+  m_Name: SpawnPoint_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1438,7 +1446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1856041603}
   m_Layer: 0
-  m_Name: SpawnPoint_14
+  m_Name: SpawnPoint_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1585,7 +1593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletprefab: {fileID: 6148540172660684242, guid: 3b46ec4fbf46eef40a6f9e58d16428ab,
     type: 3}
-  amount: 200
+  amount: 1000
 --- !u!1001 &2385643296299436493
 PrefabInstance:
   m_ObjectHideFlags: 0

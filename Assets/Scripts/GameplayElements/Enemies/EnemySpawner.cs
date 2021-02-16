@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameEvents;
 using GameEvents.Enemies;
 using GameplayElements.Bullets;
@@ -16,87 +18,109 @@ namespace GameplayElements.Enemies
         private readonly EnemyEntityPool _enemyPool;
         private readonly BulletPool _enemyBullets;
         private readonly EntityConfiguration _config;
-        private IObserver<GameEvent> _observer;
+        private Subject<GameEvent> _enemySubject;
         private CompositeDisposable _disposable = new CompositeDisposable();
         private Func<Vector3> _playerPosition;
         
         private int _currentWave = 0;
-        private int _enemiesSpawned = 0;
+        private int _enemiesDead = 0;
+        private List<EnemyView> _allenemies = new List<EnemyView>();
 
-        public EnemySpawner(EnemyEntityPool enemyPool, Transform[] spawnPoints, IObserver<GameEvent> enemyObserver,
+        public EnemySpawner(EnemyEntityPool enemyPool, Transform[] spawnPoints, Subject<GameEvent> enemyObserver,
             EntityConfiguration configuration, BulletPool enemyBullets, Func<Vector3> playerPosition)
         {
             _enemyPool = enemyPool;
             _spawnPoints = spawnPoints;
             _enemyBullets = enemyBullets;
             _config = configuration;
-            _observer = enemyObserver;
+            _enemySubject = enemyObserver;
             _playerPosition = playerPosition;
+            SubscribeToEvents();
             Start();
         }
 
         public void Start()
         {
-            GenerateEnemies(WhenDone());
+            GenerateEnemies();
         }
 
-        public void Stop()
+        public void Stop(Action callback = null)
         {
+            ClearEntities(callback);
             ClearDisposables();
+        }
+
+        private void ClearEntities(Action callback = null)
+        {
+            foreach (var enemy in _allenemies)
+            {
+                enemy.OnRelease();
+            }
+
+            callback?.Invoke();
+        }
+
+        private void SubscribeToEvents()
+        {
+            _enemySubject.Subscribe(e =>
+            {
+                if(e.name == EventNames.EnemyKilled)
+                    _enemiesDead++;
+            });
         }
         
         private void OnGameFinished()
         {
             Stop();
-            _observer.OnNext(EnemyEvent.AllWavesFinished());
+            _enemySubject.OnNext(EnemyEvent.AllWavesFinished());
         }
 
-        private void GenerateEnemies(IObservable<Unit> whenDone)
+        private void GenerateEnemies()
         {
+            Spawn();
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .AsUnitObservable()
-                .Concat(whenDone)
-                .TakeUntil(whenDone)
-                .Do(_ => Spawn())
-                .Subscribe()
-                .AddTo(_disposable);
-
-            whenDone
-                .Do(_ => CheckGameEnd())
+                .Do(_ =>
+                {
+                    if(ShouldSpawn())
+                        Spawn();
+                    else if (IsObjectiveMet())
+                    {
+                        ClearEntities();
+                        CheckGameEnd();
+                    }
+                    else
+                        Spawn();
+                })
                 .Subscribe()
                 .AddTo(_disposable);
         }
 
         private void Spawn()
         {
-            var strategy = new OmniShot().WithPool(_enemyBullets).WithType(BulletType.Enemy);
-            var spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
-            var enemyView = _enemyPool.Acquire(spawnPoint, _playerPosition, strategy);
-            enemyView.SetPresenter(new EnemyPresenter(enemyView, _observer, _config, _enemyBullets));
-        }
-
-        private IObservable<Unit> WhenDone()
-        {
-            return Observable.Create<Unit>(emitter =>
-                {
-                    if (IsObjectiveMet())
-                    {
-                        _observer.OnNext(EnemyEvent.WaveFinished());
-                        emitter.OnNext(Unit.Default);
-                        emitter.OnCompleted();
-                    }
-                    return Disposable.Empty;
-                });
+            if (ShouldSpawn())
+            {
+                var strategy = new BlossomingMultiShot().WithPool(_enemyBullets).WithType(BulletType.Enemy);
+                var spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
+                var enemyView = _enemyPool.Acquire(spawnPoint, _playerPosition, strategy);
+                enemyView.SetPresenter(new EnemyPresenter(enemyView, _enemySubject, _config, _enemyBullets));
+                _allenemies.Add(enemyView);
+            }
         }
 
         private bool IsObjectiveMet()
         {
-            return _config.EnemiesPerWave[_currentWave] <= _enemiesSpawned;
+            return _allenemies.All(enemy => enemy.enabled == false);
+        }
+
+        private bool ShouldSpawn()
+        {
+            return _allenemies.Count+1 <= _config.EnemiesPerWave[_currentWave];
         }
 
         private void CheckGameEnd()
         {
-            if(_currentWave == _config.EnemiesPerWave.Length)
+            if(_currentWave == _config.EnemiesPerWave.Length-1)
                 OnGameFinished();
             else
                 ResetWave();
@@ -104,13 +128,14 @@ namespace GameplayElements.Enemies
 
         private void ResetWave()
         {
+            _enemySubject.OnNext(EnemyEvent.WaveFinished());
             Observable.Timer(TimeSpan.FromSeconds(3))
                 .Do(_ =>
                 {
-                    Stop();
-                    _currentWave++;
-                    _enemiesSpawned = 0;
-                    Start();
+                    _currentWave = (_currentWave + 1) % _config.EnemiesPerWave.Length;
+                    _allenemies.Clear();
+                    _enemiesDead = 0;
+                    _enemySubject.OnNext(EnemyEvent.WaveStart());
                 })
                 .Subscribe();
         }

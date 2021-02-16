@@ -16,8 +16,10 @@ namespace GameplayElements.ShootingStrategies
             pool.Acquire(position, rotation, type);
             
             var euler = rotation.eulerAngles;
-            pool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z-45), type);
-            pool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+45) , type);
+            pool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z-10), type);
+            pool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z-20), type);
+            pool.Acquire(position, Quaternion.Euler(euler.x, euler.y, euler.z+10) , type);
+            pool.Acquire(position,Quaternion.Euler(euler.x, euler.y, euler.z+20), type);
         }
     }
 }

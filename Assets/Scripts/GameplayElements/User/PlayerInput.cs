@@ -25,8 +25,7 @@ namespace GameplayElements.User
         private void HandleInput()
         {
             Movement();
-            Shoot(); 
-            ExitGameplay();
+            Shoot();
         }
 
         private void Shoot()
@@ -46,12 +45,6 @@ namespace GameplayElements.User
         private void StopMovement()
         {
             _presenter.Move(Vector2.zero);
-        }
-
-        private void ExitGameplay()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-                _presenter.ExitGameplay();
         }
     }
 }

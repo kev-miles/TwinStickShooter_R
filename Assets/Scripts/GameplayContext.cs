@@ -5,8 +5,8 @@ using GameplayElements;
 using GameplayElements.Enemies;
 using GameplayElements.User;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
-using Random = System.Random;
 
 public class GameplayContext : MonoBehaviour
 {
@@ -20,20 +20,24 @@ public class GameplayContext : MonoBehaviour
     private Subject<GameEvent> _enemyEventsObservable;
     private Subject<GameEvent> _playerEventsObservable;
     private VictoryCondition _victoryCondition;
+    private IObservable<GameEvent> _screenObservable;
 
     public void Initialize(GameScreen gameScreen)
     {
         _screen = gameScreen;
+        _screenObservable = _screen.Observable();
         _playerEventsObservable = new Subject<GameEvent>();
         _enemyEventsObservable = new Subject<GameEvent>();
+        _enemyEventsObservable.Share();
         _victoryCondition = new WavesVictoryCondition();
         SubscribeToPlayerEvents();
+        SubscribeToScreenEvents();
         SetupPlayer();
         SubscribeToEnemyEvents();
         SetupEnemySpawner();
         SetupPowerUpSpawner();
     }
-
+    
     private void SetupPlayer()
     {
         _player = PlayerComposer.Compose(playerElements.View, _playerEventsObservable,
@@ -46,12 +50,15 @@ public class GameplayContext : MonoBehaviour
             .Do(_player.ReceiveEvents)
             .Do(e =>
             {
+                EndGameOnPlayerExit(e);
+                BroadcastEvents(e);
                 EndGameOnPlayerVictory(e);
+                CheckWaveChange(e);
                 SpawnPowerUpOnChance(e);
             })
             .Subscribe();
     }
-    
+
     private void SubscribeToPlayerEvents()
     {
         _playerEventsObservable
@@ -59,6 +66,12 @@ public class GameplayContext : MonoBehaviour
             .Where(e => e.name == EventNames.PlayerKilled)
             .Do(EndGameOnPlayerDefeat)
             .Subscribe();
+    }
+    
+    private void SubscribeToScreenEvents()
+    {
+        _screenObservable
+            .Subscribe(EndGameOnPlayerExit);
     }
 
     private void BroadcastEvents(GameEvent gameEvent)
@@ -81,20 +94,40 @@ public class GameplayContext : MonoBehaviour
     {
         if (gameEvent.name == EventNames.EnemyKilled)
         {
-            var chance = UnityEngine.Random.Range(0, 1);
+            var chance = UnityEngine.Random.Range(0, 1f);
             if(chance > playerElements.Configuration.PowerUpSpawnChance)
                 _powerUps.SpawnPowerUp();
         }
     }
-
-    private void EndGameOnPlayerDefeat(GameEvent defeatEvent)
+    
+    private void CheckWaveChange(GameEvent gameEvent)
     {
-        _enemies.Stop();
+        if (gameEvent.name == EventNames.WaveFinished)
+            _enemies.Stop();
+        if (gameEvent.name == EventNames.WaveStart)
+            _enemies.Start();
+    }
+    
+    private void EndGameOnPlayerExit(GameEvent gameEvent)
+    {
+        if(gameEvent.name == EventNames.PlayerExit)
+            _enemies.Stop(ExitGameplay);
+    }
+
+    private void EndGameOnPlayerDefeat(GameEvent gameEvent)
+    {
+        if(gameEvent.name == EventNames.PlayerKilled)
+            _enemies.Stop();
     }
     
     private void EndGameOnPlayerVictory(GameEvent victoryEvent)
     {
-        if(_victoryCondition.CheckCondition(victoryEvent));
-            _playerEventsObservable.OnNext(PlayerEvent.Victory());
+        if(_victoryCondition.CheckCondition(victoryEvent))
+            _playerEventsObservable.OnNext(PlayerEvent.Victory(_player.Score()));
+    }
+
+    private void ExitGameplay()
+    {
+        _screen.ShowExitTransition();
     }
 }

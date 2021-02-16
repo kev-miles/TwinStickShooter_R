@@ -18,6 +18,8 @@ namespace GameplayElements.User
 
         private int _hp;
         private int _score = 0;
+        
+        public int Score => _score;
 
         public PlayerPresenter(PlayerView view, IObserver<GameEvent> playerObserver,
             EntityConfiguration entityConfiguration, BulletPool pool)
@@ -33,11 +35,13 @@ namespace GameplayElements.User
 
         public void Damage()
         {
-            _hp--;
-            _observer.OnNext(PlayerEvent.Damage(_hp));
-            UpdateScore(_config.ScoreDamage);
-
-            if (_hp == 0)
+            if (_hp - 1 > 0)
+            {
+                _hp--;
+                _observer.OnNext(PlayerEvent.Damage(_hp));
+                UpdateScore(_config.ScoreDamage);
+            }
+            else
                 Death();
         }
 

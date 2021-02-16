@@ -7,15 +7,16 @@ namespace GameplayElements.User
     {
         [SerializeField, Range(0,10)] private float playerSpeed = 5f;
         [SerializeField] private int playerHp = 5;
-        [SerializeField, Range(0,10)] private float enemySpeed = 5f;
+        [SerializeField, Range(0,10)] private float enemySpeed = 2f;
         [SerializeField] private int enemyHp = 3;
         [SerializeField] private int scorePowerUp = 100;
         [SerializeField] private int scoreDamage = -150;
         [SerializeField] private int scoreDeath = -350;
-        [SerializeField] private int scoreEnemy = 25;
+        [SerializeField] private int scoreEnemy = 250;
         [SerializeField] private int[] enemiesPerWave = new[] {25, 50, 100};
         [SerializeField] private float powerUpSpawnChance = 0.9f;
-        
+        [SerializeField] private int maxEnemySpawnsAtOnce = 5;
+
         public int PlayerHp => playerHp;
         public float PlayerSpeed => playerSpeed;
         public int EnemyHp => enemyHp;
@@ -26,5 +27,6 @@ namespace GameplayElements.User
         public int ScoreDeath => scoreDeath;
         public float PowerUpSpawnChance => powerUpSpawnChance;
         public int[] EnemiesPerWave => enemiesPerWave;
+        public int MaxEnemySpawnsAtOnce => maxEnemySpawnsAtOnce;
     }
 }

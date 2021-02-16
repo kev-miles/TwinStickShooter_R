@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameEvents;
+using GameEvents.Player;
 using GameEvents.Screen;
 using GameEvents.Screen.Popups;
 using GameplayElements.User;
@@ -18,6 +19,7 @@ public class GameScreen : MonoBehaviour
     [Header("Popups")] 
     [SerializeField] private HowToPlayView howToPlayView = default;
     [SerializeField] private GameOverView gameOverView = default;
+    [SerializeField] private WaveFeedbackView waveFeedback = default;
     
     [Header("Buttons")]
     [SerializeField] private Button startGameButton = default;
@@ -50,6 +52,11 @@ public class GameScreen : MonoBehaviour
         sceneLoaded += OnSceneLoaded;
         LoadScreenDirectory();
         SetupGameplayEventMap();
+    }
+    
+    public IObservable<GameEvent> Observable()
+    {
+        return (IObservable<GameEvent>) _screenObservable;
     }
 
     #region Menu&Flow
@@ -99,8 +106,10 @@ public class GameScreen : MonoBehaviour
 
     private void ShowGameplayScreen()
     {
+        ResetLabels();
         screenAnimator.SetTrigger(ShowGameplay);
     }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _screenObservable.OnNext(ScreenEvent.TransitionIn(scene.buildIndex));
@@ -120,7 +129,7 @@ public class GameScreen : MonoBehaviour
         screenAnimator.ResetTrigger(ShowMenu);
         screenAnimator.ResetTrigger(ShowGameplay);
     }
-    
+
     #endregion
 
     #region Gameplay
@@ -131,7 +140,7 @@ public class GameScreen : MonoBehaviour
             _eventMap[e.name](e);
     }
 
-    private void ShowExitTransition(GameEvent exitEvent)
+    public void ShowExitTransition()
     {
         ExitTransition();
     }
@@ -153,13 +162,25 @@ public class GameScreen : MonoBehaviour
 
     private void ShowScore(GameEvent scoreEvent)
     {
-        scoreLabel.text = "Score " + scoreEvent.parameters["Score"];
+        scoreLabel.text = "Score: " + scoreEvent.parameters["Score"];
     }
 
+    private void ShowVictoryPopup(GameEvent victoryEvent)
+    {
+        var score = victoryEvent.parameters["FinalScore"];
+        gameOverView.Show(score, true, () => _screenObservable.OnNext(PlayerEvent.Exit()));
+    }
+    
     private void ShowGameOverPopup(GameEvent deathEvent)
     {
+        hpLabel.text = "HP: 0";
         var score = deathEvent.parameters["FinalScore"];
-        gameOverView.Show(score, false, ExitTransition);
+        gameOverView.Show(score, false, () => _screenObservable.OnNext(PlayerEvent.Exit()));
+    }
+    
+    private void ShowWaveFinishedFeedback(GameEvent waveEvent)
+    {
+        waveFeedback.gameObject.SetActive(true);
     }
 
     private void ExitTransition()
@@ -167,15 +188,23 @@ public class GameScreen : MonoBehaviour
         ShowTransition();
         _sceneToLoad = (int)SceneId.Menu;
     }
+    
+    private void ResetLabels()
+    {
+        powerUpLabel.text = "";
+        hpLabel.text = "HP: 5";
+        scoreLabel.text = "Score: 0";
+    }
 
     private void SetupGameplayEventMap()
     {
+        _eventMap[EventNames.PlayerVictory] = ShowVictoryPopup;
         _eventMap[EventNames.PlayerKilled] = ShowGameOverPopup;
         _eventMap[EventNames.PlayerDamaged] = ShowDamageFeedback;
         _eventMap[EventNames.PlayerHealed] = ShowHealingFeedback;
-        _eventMap[EventNames.PlayerExit] = ShowExitTransition;
         _eventMap[EventNames.UpdateScore] = ShowScore;
         _eventMap[EventNames.GotPowerUp] = ShowPowerUpFeedback;
+        _eventMap[EventNames.WaveFinished] = ShowWaveFinishedFeedback;
     }
 
     #endregion

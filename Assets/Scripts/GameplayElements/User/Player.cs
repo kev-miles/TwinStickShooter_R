@@ -34,6 +34,11 @@ namespace GameplayElements.User
                 _eventMap[external.name]();
         }
         
+        public int Score()
+        {
+            return _presenter.Score;
+        }
+        
         public Vector3 GetPlayerPosition()
         {
             return _view.transform.position;

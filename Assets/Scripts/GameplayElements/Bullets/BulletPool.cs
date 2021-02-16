@@ -34,13 +34,13 @@ namespace GameplayElements.Bullets
             }
         }
 
-        public Bullet Acquire (Vector3 origin, Quaternion rotation , BulletType type)
+        public Bullet Acquire (Vector3 origin, Quaternion rotation , BulletType type, BulletStrategy strategy = null)
         {
             var obj = usable.Pop();
             obj.gameObject.SetActive(true);
             obj.transform.position = origin;
             obj.transform.rotation = rotation;
-            obj.strategy = new RegularBullet();
+            obj.strategy = strategy ?? new RegularBullet();
             obj.origin = this;
             obj.bulletType = type;
             obj.OnAcquire();

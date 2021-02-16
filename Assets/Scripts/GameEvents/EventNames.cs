@@ -13,5 +13,6 @@
         public static string EnemyKilled = "EnemyKilled";
         public static string WaveFinished = "WaveFinished";
         public static string AllWavesFinished = "AllWavesFinished";
+        public static string WaveStart = "WaveStart";
     }
 }

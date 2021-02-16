@@ -38,7 +38,7 @@ namespace GameplayElements.Bullets
 
         void ImplementBehaviour()
         {
-            strategy.Execute(rigidbody,transform);
+            strategy?.Execute(rigidbody,transform);
         }
 
         void InitialSetup()

@@ -1,4 +1,5 @@
 ﻿using GameEvents.Player;
+using GameplayElements.User;
 
 namespace GameEvents.Enemies
 {
@@ -7,5 +8,7 @@ namespace GameEvents.Enemies
         public static EnemyDeathEvent Death() => new EnemyDeathEvent();
         public static WaveFinishedEvent WaveFinished() => new WaveFinishedEvent();
         public static AllWavesFinishedEvent AllWavesFinished() => new AllWavesFinishedEvent();
+
+        public static GameEvent WaveStart() => new GameEvent(EventNames.WaveStart);
     }
 }

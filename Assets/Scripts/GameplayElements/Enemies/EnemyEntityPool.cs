@@ -50,6 +50,7 @@ namespace GameplayElements.Enemies
 
         public void Release(EnemyView obj)
         {
+            if (obj == null) return;
             _usable.Push(obj);
             obj.transform.position = new Vector2(100, 100);
             Add(obj);

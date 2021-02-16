@@ -8,7 +8,6 @@ namespace GameplayElements
         public bool CheckCondition(GameEvent gameEvent)
         {
             return gameEvent.name == EventNames.AllWavesFinished;
-
         }
     }
 }
