@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   playerHp: 5
-  enemySpeed: 3
+  enemySpeed: 8
   enemyHp: 3
   scorePowerUp: 100
   scoreDamage: -150
   scoreDeath: -350
-  scoreEnemy: 25
+  scoreEnemy: 250
   enemiesPerWave: 050000000a0000000f000000
-  powerUpSpawnChance: 0.9
+  powerUpSpawnChance: 0.8
+  maxEnemySpawnsAtOnce: 5
