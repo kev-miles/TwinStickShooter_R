@@ -23,11 +23,11 @@ namespace GameplayElements.Enemies
 
             for (int i = 0; i <= amount; i++)
             {
-                var _enemyprefab = GameObject.Instantiate(enemyPrefab);
-                _enemyprefab.transform.position = new Vector2(100, 100);
-                _enemyprefab.gameObject.SetActive(false);
-                _usable.Push(_enemyprefab);
-                Add(_enemyprefab);
+                var enemyprefab = GameObject.Instantiate(enemyPrefab);
+                enemyprefab.transform.position = new Vector2(100, 100);
+                enemyprefab.gameObject.SetActive(false);
+                _usable.Push(enemyprefab);
+                Add(enemyprefab);
             }
         }
 
@@ -51,9 +51,12 @@ namespace GameplayElements.Enemies
         public void Release(EnemyView obj)
         {
             if (obj == null) return;
-            _usable.Push(obj);
-            obj.transform.position = new Vector2(100, 100);
-            Add(obj);
+            if (!_usable.Contains(obj))
+            {
+                _usable.Push(obj);
+                obj.transform.position = new Vector2(100, 100);
+                Add(obj);
+            }
         }
     }
 }

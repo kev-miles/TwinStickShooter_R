@@ -64,8 +64,11 @@ namespace GameplayElements.Enemies
         {
             _enemySubject.Subscribe(e =>
             {
-                if(e.name == EventNames.EnemyKilled)
+                if (e.name == EventNames.EnemyKilled)
+                {
                     _enemiesDead++;
+                    Debug.Log("EnemyDead. Count: " + _enemiesDead.ToString());
+                }
             });
         }
         
@@ -89,8 +92,6 @@ namespace GameplayElements.Enemies
                         ClearEntities();
                         CheckGameEnd();
                     }
-                    else
-                        Spawn();
                 })
                 .Subscribe()
                 .AddTo(_disposable);
@@ -98,19 +99,17 @@ namespace GameplayElements.Enemies
 
         private void Spawn()
         {
-            if (ShouldSpawn())
-            {
-                var strategy = new BlossomingMultiShot().WithPool(_enemyBullets).WithType(BulletType.Enemy);
-                var spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
-                var enemyView = _enemyPool.Acquire(spawnPoint, _playerPosition, strategy);
-                enemyView.SetPresenter(new EnemyPresenter(enemyView, _enemySubject, _config, _enemyBullets));
-                _allenemies.Add(enemyView);
-            }
+            var strategy = new BlossomingMultiShot().WithPool(_enemyBullets).WithType(BulletType.Enemy);
+            var spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
+            var enemyView = _enemyPool.Acquire(spawnPoint, _playerPosition, strategy);
+            enemyView.SetPresenter(new EnemyPresenter(enemyView, _enemySubject, _config, _enemyBullets));
+            _allenemies.Add(enemyView);
         }
 
         private bool IsObjectiveMet()
         {
-            return _allenemies.All(enemy => enemy.enabled == false);
+            //Debug.Log("*** COUNT *** " + _enemiesDead.ToString() +" dead of " + _allenemies.Count.ToString());
+            return _enemiesDead >= _config.EnemiesPerWave[_currentWave];
         }
 
         private bool ShouldSpawn()

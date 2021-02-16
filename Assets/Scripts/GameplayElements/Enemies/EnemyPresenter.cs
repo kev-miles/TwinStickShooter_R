@@ -26,7 +26,6 @@ namespace GameplayElements.Enemies
         
         private int _hp;
         private int _currentBehaviour;
-        public int HP => _hp;
 
         public EnemyPresenter(EnemyView view, IObserver<GameEvent> enemyObserver,
             EntityConfiguration entityConfiguration, BulletPool pool)
@@ -70,7 +69,7 @@ namespace GameplayElements.Enemies
         private void ExecuteBehaviours()
         {
             _behaviours[UnityEngine.Random.Range(0,_behaviours.Count)].Execute();
-            _disposable = Observable.Interval(TimeSpan.FromSeconds(10))
+            _disposable = Observable.Interval(TimeSpan.FromSeconds(5))
                 .Do(_ =>
                 {
                     _behaviours[_currentBehaviour].Stop();

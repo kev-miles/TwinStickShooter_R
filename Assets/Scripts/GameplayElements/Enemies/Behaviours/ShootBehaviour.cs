@@ -30,7 +30,7 @@ namespace GameplayElements.Enemies.Behaviours
 
         public void Stop()
         {
-            _disposable.Dispose();
+            _disposable?.Dispose();
         }
         
         private void CallMethod()
