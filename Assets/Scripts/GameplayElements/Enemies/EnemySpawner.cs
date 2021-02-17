@@ -108,7 +108,6 @@ namespace GameplayElements.Enemies
 
         private bool IsObjectiveMet()
         {
-            //Debug.Log("*** COUNT *** " + _enemiesDead.ToString() +" dead of " + _allenemies.Count.ToString());
             return _enemiesDead >= _config.EnemiesPerWave[_currentWave];
         }
 
