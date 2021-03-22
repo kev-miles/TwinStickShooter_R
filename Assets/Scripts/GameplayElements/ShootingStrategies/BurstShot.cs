@@ -18,7 +18,7 @@ namespace GameplayElements.ShootingStrategies
             var position = shooter.position;
 
             pool.Acquire(position, rotation, type);
-            Observable.Timer(TimeSpan.FromSeconds(shotDelay))
+            disposable = Observable.Timer(TimeSpan.FromSeconds(shotDelay))
                 .Do(_ => pool.Acquire(position, rotation, type))
                 .Delay(TimeSpan.FromSeconds(shotDelay))
                 .Do(_ => pool.Acquire(position, rotation, type))

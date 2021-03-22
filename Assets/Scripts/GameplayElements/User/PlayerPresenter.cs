@@ -52,13 +52,13 @@ namespace GameplayElements.User
         
         public void Shoot()
         {
-            if (!IsAlive()) return;
             _observer.OnNext(PlayerEvent.Shoot());
             _view.Shoot(_shootingStrategy);
         }
 
         public void ExitGameplay()
         {
+            _shootingStrategy.Dispose();
             _observer.OnNext(PlayerEvent.Exit());
         }
 
@@ -77,14 +77,10 @@ namespace GameplayElements.User
             _observer.OnNext(PlayerEvent.PowerUp(strategy.Name));
         }
 
-        private bool IsAlive()
-        {
-            return _hp > 0;
-        }
-        
         private void Death()
         {
             UpdateScore(_config.ScoreDeath);
+            _shootingStrategy.Dispose();
             _observer.OnNext(PlayerEvent.Death(_score));
             _view.ShowDeath();
         }

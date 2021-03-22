@@ -1,4 +1,5 @@
-﻿using GameplayElements.Bullets;
+﻿using System;
+using GameplayElements.Bullets;
 using UnityEngine;
 
 namespace GameplayElements.ShootingStrategies
@@ -10,6 +11,7 @@ namespace GameplayElements.ShootingStrategies
         protected string name;
         protected BulletPool pool;
         protected BulletType type;
+        protected IDisposable disposable;
 
         public virtual void Shoot(Transform shooter){}
 
@@ -23,6 +25,11 @@ namespace GameplayElements.ShootingStrategies
         {
             this.type = type;
             return this;
+        }
+
+        public void Dispose()
+        {
+            disposable?.Dispose();
         }
     }
 }
