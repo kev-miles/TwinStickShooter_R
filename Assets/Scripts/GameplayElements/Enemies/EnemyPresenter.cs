@@ -52,7 +52,7 @@ namespace GameplayElements.Enemies
                 behaviour.Stop();
             }
             _hp = _config.EnemyHp;
-            _disposable.Dispose();
+            DisposeObservables();
         }
         
         public void Damage()
@@ -65,11 +65,16 @@ namespace GameplayElements.Enemies
                 Death();
             }
         }
+
+        public void DisposeObservables()
+        {
+            _disposable.Dispose();
+        }
         
         private void ExecuteBehaviours()
         {
             _behaviours[UnityEngine.Random.Range(0,_behaviours.Count)].Execute();
-            _disposable = Observable.Interval(TimeSpan.FromSeconds(5))
+            _disposable = Observable.Interval(TimeSpan.FromSeconds(_config.ChangeBehaviourTime))
                 .Do(_ =>
                 {
                     _behaviours[_currentBehaviour].Stop();

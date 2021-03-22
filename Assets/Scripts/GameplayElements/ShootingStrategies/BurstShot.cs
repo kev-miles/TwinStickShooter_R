@@ -13,8 +13,6 @@ namespace GameplayElements.ShootingStrategies
 
         public override void Shoot(Transform shooter)
         {
-            if (shooter == null) return;
-            
             var shotDelay = 0.05f;
             var rotation = shooter.rotation;
             var position = shooter.position;

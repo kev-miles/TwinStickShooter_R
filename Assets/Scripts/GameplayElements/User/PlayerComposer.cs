@@ -12,7 +12,7 @@ namespace GameplayElements.User
         {
             var playerSubject = new Subject<GameEvent>();
             var presenter = new PlayerPresenter(view, playerSubject, configuration, pool);
-            var input = new PlayerInput(view, presenter, configuration);
+            var input = new PlayerInput(view, presenter, playerSubject);
 
             return new Player(view, presenter, input, playerEventsObserver, playerSubject);
         }

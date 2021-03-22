@@ -92,5 +92,10 @@ namespace GameplayElements.Enemies
             if(player != null)
                 player.Damage();
         }
+
+        private void OnDestroy()
+        {
+            _presenter?.DisposeObservables();
+        }
     }
 }

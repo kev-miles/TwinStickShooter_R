@@ -7,12 +7,11 @@ namespace GameplayElements.ShootingStrategies
     {
         public BlossomingMultiShot() : base()
         {
-            base.name = "MultiShot";
+            base.name = "BlossomingMultiShot";
         }
         
         public override void Shoot(Transform shooter)
         {
-            if(shooter == null) return;
             var rotation = shooter.rotation;
             var position = shooter.position;
             var euler = rotation.eulerAngles;

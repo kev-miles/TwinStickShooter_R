@@ -16,6 +16,8 @@ namespace GameplayElements.User
         [SerializeField] private int[] enemiesPerWave = new[] {25, 50, 100};
         [SerializeField] private float powerUpSpawnChance = 0.9f;
         [SerializeField] private int maxEnemySpawnsAtOnce = 5;
+        [SerializeField] private int changeBehaviourTime = 5;
+        [SerializeField] private int waveResetTime = 3;
 
         public int PlayerHp => playerHp;
         public float PlayerSpeed => playerSpeed;
@@ -28,5 +30,7 @@ namespace GameplayElements.User
         public float PowerUpSpawnChance => powerUpSpawnChance;
         public int[] EnemiesPerWave => enemiesPerWave;
         public int MaxEnemySpawnsAtOnce => maxEnemySpawnsAtOnce;
+        public double ChangeBehaviourTime => changeBehaviourTime;
+        public double WaveResetTime => waveResetTime;
     }
 }

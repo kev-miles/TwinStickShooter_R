@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using GameEvents;
+using UniRx;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GameplayElements.User
@@ -6,26 +9,49 @@ namespace GameplayElements.User
     public class PlayerInput
     {
         private PlayerPresenter _presenter;
-        private EntityConfiguration _config;
-        public PlayerInput(PlayerView view, PlayerPresenter presenter,
-            EntityConfiguration entityConfiguration)
+        private IObservable<GameEvent> _observer;
+        private bool _receiveInput = true;
+
+        public PlayerInput(PlayerView view, PlayerPresenter presenter, IObservable<GameEvent> playerObserver)
         {
             _presenter = presenter;
-            _config = entityConfiguration;
             view.OnUpdate += Update;
+            _observer = playerObserver;
+            SubscribeToObservable();
+        }
+
+        private void SubscribeToObservable()
+        {
+            _observer
+                .Where(e => e.name == EventNames.PlayerExit || e.name == EventNames.PlayerKilled)
+                .Select(_ => ToggleInput())
+                .Where(input => input == false)
+                .Do(_ => StopMovement())
+                .Subscribe();
+        }
+
+        private bool ToggleInput()
+        {
+            return _receiveInput = !_receiveInput;
         }
 
         private void Update()
         {
-            if (_presenter.IsAlive())
+            if (_receiveInput)
                 HandleInput();
-            else
-                StopMovement();
         }
+        
         private void HandleInput()
         {
+            ExitGameplay();
             Movement();
             Shoot();
+        }
+        
+        private void ExitGameplay()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                _presenter.ExitGameplay();
         }
 
         private void Shoot()

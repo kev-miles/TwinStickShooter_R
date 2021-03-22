@@ -62,6 +62,7 @@ public class GameplayContext : MonoBehaviour
     private void SubscribeToPlayerEvents()
     {
         _playerEventsObservable
+            .Do(EndGameOnPlayerExit)
             .Do(BroadcastEvents)
             .Where(e => e.name == EventNames.PlayerKilled)
             .Do(EndGameOnPlayerDefeat)
@@ -72,6 +73,12 @@ public class GameplayContext : MonoBehaviour
     {
         _screenObservable
             .Subscribe(EndGameOnPlayerExit);
+    }
+    
+    private void DisposeObservables()
+    {
+        _playerEventsObservable.Dispose();
+        _enemyEventsObservable.Dispose();
     }
 
     private void BroadcastEvents(GameEvent gameEvent)
@@ -117,7 +124,7 @@ public class GameplayContext : MonoBehaviour
     private void EndGameOnPlayerDefeat(GameEvent gameEvent)
     {
         if(gameEvent.name == EventNames.PlayerKilled)
-            _enemies.Stop();
+            _enemies.Stop(DisposeObservables);
     }
     
     private void EndGameOnPlayerVictory(GameEvent victoryEvent)

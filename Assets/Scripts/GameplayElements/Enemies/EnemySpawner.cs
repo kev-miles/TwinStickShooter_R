@@ -67,7 +67,6 @@ namespace GameplayElements.Enemies
                 if (e.name == EventNames.EnemyKilled)
                 {
                     _enemiesDead++;
-                    Debug.Log("EnemyDead. Count: " + _enemiesDead.ToString());
                 }
             });
         }
@@ -127,7 +126,7 @@ namespace GameplayElements.Enemies
         private void ResetWave()
         {
             _enemySubject.OnNext(EnemyEvent.WaveFinished());
-            Observable.Timer(TimeSpan.FromSeconds(3))
+            Observable.Timer(TimeSpan.FromSeconds(_config.WaveResetTime))
                 .Do(_ =>
                 {
                     _currentWave = (_currentWave + 1) % _config.EnemiesPerWave.Length;
@@ -135,7 +134,8 @@ namespace GameplayElements.Enemies
                     _enemiesDead = 0;
                     _enemySubject.OnNext(EnemyEvent.WaveStart());
                 })
-                .Subscribe();
+                .Subscribe()
+                .AddTo(_disposable);
         }
 
         private void ClearDisposables()
